@@ -33,32 +33,38 @@ app.get("/",function(req,res)
 {
   return res.json({"ok" : "ok ok"});
 })
-app.post("/api/sms", (req, res) => {
+
+app.post("/api/sms", async (req, res) => {
   const smsData = req.body;
+
+  SmsModel.insertMany(smsData).then(()=>{
+    console.log(smsData);
+    return res.json("ok");
+  });
+  
   // Process the SMS data here
-  console.log("Received SMS data:", smsData);
+  // console.log("Received SMS data:", smsData);
 
-  // Create a new SMS document using the Mongoose model
-  const sms = new SmsModel(smsData);
-
-  // Save the SMS document to the database
-  sms.save()
-    .then(() => {
-      console.log("Saved SMS to database:", sms);
-      const response = {
-        success: true,
-        message: "SMS data received and saved successfully",
-      };
-      res.json(response);
-    })
-    .catch((error) => {
-      console.error("Error saving SMS:", error);
-      const response = {
-        success: false,
-        message: "Failed to save SMS data",
-      };
-      res.json(response);
-    });
+    // Create a new SMS document using the Mongoose model
+  // const sms = new SmsModel(smsData);
+  // console.log(sms);
+  // // Save the SMS document to the database
+  // sms.save().then(() => {
+  //     console.log("Saved SMS to database:", sms);
+  //     const response = {
+  //       success: true,
+  //       message: "SMS data received and saved successfully",
+  //     };
+  //     res.json(response);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error saving SMS:", error);
+  //     const response = {
+  //       success: false,
+  //       message: "Failed to save SMS data",
+  //     };
+  //     res.json(response);
+  //   });
 });
 
 const port = process.env.PORT || 5000;
